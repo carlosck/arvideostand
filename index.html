@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        /***
+    The new CSS reset - version 1.11.1 (last updated 24.10.2023)
+    GitHub page: https://github.com/elad2412/the-new-css-reset
+***/
+
+/*
+    Remove all the styles of the "User-Agent-Stylesheet", except for the 'display' property
+    - The "symbol *" part is to solve Firefox SVG sprite bug
+    - The "html" element is excluded, otherwise a bug in Chrome breaks the CSS hyphens property (https://github.com/elad2412/the-new-css-reset/issues/36)
+ */
+*:where(:not(html, iframe, canvas, img, svg, video, audio):not(svg *, symbol *)) {
+    all: unset;
+    display: revert;
+}
+
+/* Preferred box-sizing value */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+/* Fix mobile Safari increase font-size on landscape mode */
+html {
+    -moz-text-size-adjust: none;
+    -webkit-text-size-adjust: none;
+    text-size-adjust: none;
+}
+
+/* Reapply the pointer cursor for anchor tags */
+a, button {
+    cursor: revert;
+}
+
+/* Remove list styles (bullets/numbers) */
+ol, ul, menu, summary {
+    list-style: none;
+}
+
+/* For images to not be able to exceed their container */
+img {
+    max-inline-size: 100%;
+    max-block-size: 100%;
+}
+
+/* removes spacing between cells in tables */
+table {
+    border-collapse: collapse;
+}
+
+/* Safari - solving issue when using user-select:none on the <body> text input doesn't working */
+input, textarea {
+    -webkit-user-select: auto;
+}
+
+/* revert the 'white-space' property for textarea elements on Safari */
+textarea {
+    white-space: revert;
+}
+
+/* minimum style to allow to style meter element */
+meter {
+    -webkit-appearance: revert;
+    appearance: revert;
+}
+
+/* preformatted text - use only for this feature */
+:where(pre) {
+    all: revert;
+    box-sizing: border-box;
+}
+
+/* reset default text opacity of input placeholder */
+::placeholder {
+    color: unset;
+}
+
+/* fix the feature of 'hidden' attribute.
+   display:revert; revert to element instead of attribute */
+:where([hidden]) {
+    display: none;
+}
+
+/* revert for bug in Chromium browsers
+   - fix for the content editable attribute will work properly.
+   - webkit-user-select: auto; added for Safari in case of using user-select:none on wrapper element*/
+:where([contenteditable]:not([contenteditable="false"])) {
+    -moz-user-modify: read-write;
+    -webkit-user-modify: read-write;
+    overflow-wrap: break-word;
+    -webkit-line-break: after-white-space;
+    -webkit-user-select: auto;
+}
+
+/* apply back the draggable feature - exist only in Chromium and Safari */
+:where([draggable="true"]) {
+    -webkit-user-drag: element;
+}
+
+/* Revert Modal native behavior */
+:where(dialog:modal) {
+    all: revert;
+    box-sizing: border-box;
+}
+    </style>
+    <style>
+        .section_container
+        {
+            background-color: lightgrey;
+            overflow: hidden;
+            width: 100vw;
+            height: 100vh;
+        }
+        .section_logo{
+            height: 75px;
+            background-color: white;
+            color: red;
+            position: relative;
+            display: block;
+        }
+        .stage{
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            width: 70%;
+            padding-left: 15%;
+        }
+        .stage h1{
+            font-size: 25px;
+            text-align: center;
+        }
+        .section{
+            width: 100vw;
+            height: calc(100vh - 75px);
+            display: none;
+            justify-content: center;
+        }
+        .section.visible{
+            display: flex;
+        }
+        #intro_button{
+            width: 400px;
+            padding: 10px 25px;
+            background-color: brown;
+            color: white;
+            text-align: center;
+            position: relative;
+            margin-top: 50%;
+            height: fit-content;
+        }
+        #intro_button h2{
+            font-size: 24px;
+        }
+        .form_container{
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+        }
+        .form_fields{
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .form_fields input {
+            height: 35px;
+            width: 400px;
+            background-color: azure;
+        }
+        .email_fields{
+            display: flex;
+        }
+        .v-keyboard_container{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .v-keyboard-row{
+            display: flex;
+            flex-direction: row;
+            margin-top: 5px;
+        }
+        .keyboard-button{
+            display: flex;
+            width: 35px;
+            height: 35px;
+            border: 1px solid red;
+            align-content: center;
+            align-items: center;
+            justify-content: center;
+            margin-right: 5px;
+            margin-top: 5px;            
+            
+        }
+        .keyboard-button_mail{
+            display: flex;
+            width: 150px;
+            height: 35px;
+            border: 1px solid red;
+            align-content: center;
+            align-items: center;
+            justify-content: center;
+            margin-right: 5px;
+            margin-top: 5px;
+        }
+        .keyboard-checkbox{
+            background-color: white;
+            border: 1px solid black;
+            width: 15px;
+            height: 15px;
+            margin-right: 10px;
+        }
+        .navigation_button{
+            display: flex;
+            
+            align-content: center;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid red;
+            width: 180px;
+            height: 35px;
+            align-items: center;
+            font-weight: bolder;
+            margin-right: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="section_container">
+        <div class="section_logo">
+           <div class="stage">
+                <h1>Topps</h1>
+           </div>
+            
+        </div>
+        <div class="section" id="intro">
+            <div class="stage">
+                <button id="intro_button">
+                    <h2>Touch to begin</h2>
+                    <p>take a photo with your favorite star</p>
+                </button>
+                
+            </div>
+            
+        </div>
+        <div class="section visible" id="data">
+            <div class="form_container">
+                <div class="form_fields email_fields">
+                    <div class="form_title">Enter Your Email Address</div>
+                    <input type="text" class="form_field" id="email_field"/>
+                </div>
+                <div class="form_fields  phone_fields">
+                    <div class="form_title">Enter Your phone (Optional)</div>
+                    <input type="text" class="form_field" id="phone_field">
+                </div>
+
+                <div class="v-keyboard_container">
+                    <div class="v-keyboard-row">
+                        <button class="keyboard-button" data-value="1">1</button>
+                        <button class="keyboard-button" data-value="2">2</button>
+                        <button class="keyboard-button" data-value="3">3</button>
+                        <button class="keyboard-button" data-value="4">4</button>
+                        <button class="keyboard-button" data-value="5">5</button>
+                        <button class="keyboard-button" data-value="6">6</button>
+                        <button class="keyboard-button" data-value="7">7</button>
+                        <button class="keyboard-button" data-value="8">8</button>
+                        <button class="keyboard-button" data-value="9">9</button>
+                        <button class="keyboard-button" data-value="0">0</button>
+                    </div>
+                    <div class="v-keyboard-row">
+                        <button class="keyboard-button" data-value="q">q</button>
+                        <button class="keyboard-button" data-value="w">w</button>
+                        <button class="keyboard-button" data-value="e">e</button>
+                        <button class="keyboard-button" data-value="r">r</button>
+                        <button class="keyboard-button" data-value="t">t</button>
+                        <button class="keyboard-button" data-value="y">y</button>
+                        <button class="keyboard-button" data-value="u">u</button>
+                        <button class="keyboard-button" data-value="i">i</button>
+                        <button class="keyboard-button" data-value="o">o</button>
+                        <button class="keyboard-button" data-value="p">p</button>
+                    </div>
+                    <div class="v-keyboard-row">
+                        <button class="keyboard-button" data-value="a">a</button>
+                        <button class="keyboard-button" data-value="s">s</button>
+                        <button class="keyboard-button" data-value="d">d</button>
+                        <button class="keyboard-button" data-value="f">f</button>
+                        <button class="keyboard-button" data-value="g">g</button>
+                        <button class="keyboard-button" data-value="h">h</button>
+                        <button class="keyboard-button" data-value="j">j</button>
+                        <button class="keyboard-button" data-value="k">k</button>
+                        <button class="keyboard-button" data-value="l">l</button>
+                        <button class="keyboard-button" data-value="ñ">ñ</button>
+                    </div>
+                    <div class="v-keyboard-row">
+                        <button class="keyboard-button" data-value="z">z</button>
+                        <button class="keyboard-button" data-value="x">x</button>
+                        <button class="keyboard-button" data-value="c">c</button>
+                        <button class="keyboard-button" data-value="v">v</button>
+                        <button class="keyboard-button" data-value="b">b</button>
+                        <button class="keyboard-button" data-value="n">n</button>
+                        <button class="keyboard-button" data-value="m">m</button>
+                        <button class="keyboard-button" data-value="k">k</button>
+                        <button class="keyboard-button" data-value="@">@</button>
+                        <button class="keyboard-button" data-value="_">_</button>
+                    </div>
+                    <div class="v-keyboard-row">
+                        <button class="keyboard-button_mail" data-value="@gmail.com">@gmail.com</button>
+                        <button class="keyboard-button_mail" data-value="@outlook.com">@outlook.com</button>                    
+                    </div>
+                    <div class="v-keyboard-row">
+                        <input type="checkbox" class="keyboard-checkbox" id="keyboard_gmail"/>
+                        <p>Politicas de privacidad</p>>                    
+                    </div>
+                    <div class="v-keyboard-row">
+                        <button class="navigation_button" id="navigation_goback">Go Back</button>
+                        <button class="navigation_button" id="navigation_submit">Accept</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="section" id="confirm">
+            <div class="stage">
+                <div class="confirm_data_container">
+                    <p>Confirm Your email address </p>
+                    <p id="confirm_email_container"> </p>
+                    <p>Confirm Your email phone </p>
+                    <p id="confirm_phone_container"> </p>
+                </div>
+                <div class="v-keyboard-row">
+                    <button class="navigation_button" id="navigation_goback_confirm">Go Back</button>
+                    <button class="navigation_button" id="navigation_submit_confirm">Accept</button>
+                </div>
+            </div>
+            
+        </div>
+        <div class="section" id="select_character">
+            <div class="stage">
+                <p>Star selection </p>
+                <div class="character_container">
+                    <div class="character_item">
+                        <p class="character_name">Jugador 1</p>
+                        <div class="character_image"><img src=""></div>
+                    </div>
+                    <div class="character_item">
+                        <p class="character_name">Jugador 2</p>
+                        <div class="character_image"><img src=""></div>
+                    </div>
+                    <div class="character_item">
+                        <p class="character_name">Mascota</p>
+                        <div class="character_image"><img src=""></div>
+                    </div>
+                </div>
+                <div class="v-keyboard-row">
+                    <button class="navigation_button" id="navigation_goback_select">Go Back</button>
+                    <button class="navigation_button" id="navigation_submit_select">Next</button>
+                </div>
+            </div>
+            
+        </div>
+        <div class="section" id="select_card">
+            <div class="stage">
+                <p>Choose your card </p>
+                <div class="card_container">
+                    <div class="card_item" id="card_item_1">
+                        <p class="card_name">1951</p>
+                        <div class="card_image"><img src=""></div>
+                    </div>
+                    <div class="card_item" id="card_item_2">
+                        <p class="card_name">1952</p>
+                        <div class="card_image"><img src=""></div>
+                    </div>
+                    <div class="card_item" id="card_item_3">
+                        <p class="card_name">1953</p>
+                        <div class="card_image"><img src=""></div>
+                    </div>
+                    <div class="card_item" id="card_item_4">
+                        <p class="card_name">1954</p>
+                        <div class="card_image"><img src=""></div>
+                    </div>
+                    <div class="card_item" id="card_item_5">
+                        <p class="card_name">1955</p>
+                        <div class="card_image"><img src=""></div>
+                    </div>
+                    <div class="card_item" id="card_item_6">
+                        <p class="card_name">1956</p>
+                        <div class="card_image"><img src=""></div>
+                    </div>
+                    <div class="card_item" id="card_item_7">
+                        <p class="card_name">1957</p>
+                        <div class="card_image"><img src=""></div>
+                    </div>
+                    
+                </div>
+                <div class="v-keyboard-row">
+                    <button class="navigation_button" id="navigation_goback_cards">Go Back</button>
+                    <button class="navigation_button" id="navigation_submit_cards">Next</button>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+    <div class="camera_container">
+        <div class="stage">
+            <p>Smile dor the camera</p>
+            <div class="camera_counter">
+                <h1>3</h1>
+            </div>
+            <div class="camera_instructions">
+                <div class="camera_logo">
+                    Topps
+                </div>
+                <div class="camera_text">
+                    Stay on the logo
+                </div>
+            </div>
+            
+        </div>
+    </div>
+    <div class="result_container">
+
+    </div>
+    <script
+  src="https://code.jquery.com/jquery-3.7.1.slim.min.js"
+  integrity="sha256-kmHvs0B+OpCW5GVHUNjv9rOmY0IvSIRcf7zGUDTDQM8="
+  crossorigin="anonymous"></script>
+    <script>
+        function gotoIntro(){
+            $('.section.visible').removeClass('visible');
+            $('#intro').addClass('visible');
+        }
+        
+        function gotoFormContainer(){
+            $('.section.visible').removeClass('visible');
+            $('#data').addClass('visible');
+        }
+        function gotoConfirm(){
+            $('.section.visible').removeClass('visible');
+            $('#confirm').addClass('visible');
+        }
+        $( document ).ready(function() {
+            console.log( "ready!" );
+            const email_field= $('#email_field');
+            $('#intro_button').on('click',function(){gotoFormContainer()})
+
+            $('.keyboard-button, .keyboard-button_mail').on('click',function(e){                
+                let KBvalue = $(e.currentTarget).data('value');
+                console.log('KBvalue',KBvalue);
+                email_field.val(email_field.val()+KBvalue);
+            })
+            $('#navigation_goback').on('click',function(){gotoIntro()})
+            $('#navigation_submit').on('click',function(){gotoConfirm()})
+            
+        });
+
+        
+
+
+    </script>
+</body>
+</html>
