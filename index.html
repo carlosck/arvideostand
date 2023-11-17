@@ -231,6 +231,46 @@ meter {
             font-weight: bolder;
             margin-right: 15px;
         }
+        .confirm_data_container{
+            display: flex;
+            flex-direction: column;            
+        }
+        #select_character .stage{
+            flex-direction: column;
+        }
+        .character_container{
+            display: flex;
+        }
+        .character_container{
+            display: flex;
+            width: 400px;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-around
+        }
+        .character_item{
+            display: flex;
+            width: 150px;
+            height: 250px;
+            border: 1px solid red;
+            margin-bottom: 15px;
+        }
+        .character_item.selected{
+            border-color: blue;
+        }
+
+        #select_card .stage{
+            flex-direction: column;
+        }
+        .card_item{
+            width: 100px;
+            height: 200px;
+            border: 1px solid red;
+            display: flex;
+        }
+        .card_item.selected{
+            border-color: blue;
+        }
     </style>
 </head>
 <body>
@@ -251,7 +291,7 @@ meter {
             </div>
             
         </div>
-        <div class="section visible" id="data">
+        <div class="section " id="data">
             <div class="form_container">
                 <div class="form_fields email_fields">
                     <div class="form_title">Enter Your Email Address</div>
@@ -326,34 +366,35 @@ meter {
                 </div>
             </div>
         </div>
-        <div class="section" id="confirm">
+        <div class="section " id="confirm">
             <div class="stage">
                 <div class="confirm_data_container">
                     <p>Confirm Your email address </p>
                     <p id="confirm_email_container"> </p>
                     <p>Confirm Your email phone </p>
                     <p id="confirm_phone_container"> </p>
+                    <div class="v-keyboard-row">
+                        <button class="navigation_button" id="navigation_goback_confirm">Go Back</button>
+                        <button class="navigation_button" id="navigation_submit_confirm">Accept</button>
+                    </div>
                 </div>
-                <div class="v-keyboard-row">
-                    <button class="navigation_button" id="navigation_goback_confirm">Go Back</button>
-                    <button class="navigation_button" id="navigation_submit_confirm">Accept</button>
-                </div>
+                
             </div>
             
         </div>
-        <div class="section" id="select_character">
+        <div class="section " id="select_character">
             <div class="stage">
                 <p>Star selection </p>
                 <div class="character_container">
-                    <div class="character_item">
+                    <div class="character_item" data-character="jugador1" id="jugador1">
                         <p class="character_name">Jugador 1</p>
                         <div class="character_image"><img src=""></div>
                     </div>
-                    <div class="character_item">
+                    <div class="character_item" data-character="jugador2" id="jugador2">
                         <p class="character_name">Jugador 2</p>
                         <div class="character_image"><img src=""></div>
                     </div>
-                    <div class="character_item">
+                    <div class="character_item" data-character="jugador3" id="jugador3">
                         <p class="character_name">Mascota</p>
                         <div class="character_image"><img src=""></div>
                     </div>
@@ -365,35 +406,35 @@ meter {
             </div>
             
         </div>
-        <div class="section" id="select_card">
+        <div class="section visible" id="select_card">
             <div class="stage">
                 <p>Choose your card </p>
                 <div class="card_container">
-                    <div class="card_item" id="card_item_1">
+                    <div class="card_item" id="card_item_1" data-card="1">
                         <p class="card_name">1951</p>
                         <div class="card_image"><img src=""></div>
                     </div>
-                    <div class="card_item" id="card_item_2">
+                    <div class="card_item" id="card_item_2" data-card="2">
                         <p class="card_name">1952</p>
                         <div class="card_image"><img src=""></div>
                     </div>
-                    <div class="card_item" id="card_item_3">
+                    <div class="card_item" id="card_item_3" data-card="3">
                         <p class="card_name">1953</p>
                         <div class="card_image"><img src=""></div>
                     </div>
-                    <div class="card_item" id="card_item_4">
+                    <div class="card_item" id="card_item_4" data-card="4">
                         <p class="card_name">1954</p>
                         <div class="card_image"><img src=""></div>
                     </div>
-                    <div class="card_item" id="card_item_5">
+                    <div class="card_item" id="card_item_5" data-card="5">
                         <p class="card_name">1955</p>
                         <div class="card_image"><img src=""></div>
                     </div>
-                    <div class="card_item" id="card_item_6">
+                    <div class="card_item" id="card_item_6" data-card="6">
                         <p class="card_name">1956</p>
                         <div class="card_image"><img src=""></div>
                     </div>
-                    <div class="card_item" id="card_item_7">
+                    <div class="card_item" id="card_item_7" data-card="7">
                         <p class="card_name">1957</p>
                         <div class="card_image"><img src=""></div>
                     </div>
@@ -432,6 +473,10 @@ meter {
   integrity="sha256-kmHvs0B+OpCW5GVHUNjv9rOmY0IvSIRcf7zGUDTDQM8="
   crossorigin="anonymous"></script>
     <script>
+        let mail='';
+        let character_array=[];
+        let card_item;
+
         function gotoIntro(){
             $('.section.visible').removeClass('visible');
             $('#intro').addClass('visible');
@@ -444,10 +489,44 @@ meter {
         function gotoConfirm(){
             $('.section.visible').removeClass('visible');
             $('#confirm').addClass('visible');
+            mail=$('#email_field').val()
+            $('#confirm_email_container').text(mail) ;
+            
         }
+        function gotoSelect_character(){
+            $('.section.visible').removeClass('visible');
+            $('#select_character').addClass('visible');   
+        }
+        function select_character(e){
+            let char_item = $(e.currentTarget).data('character');
+            
+            if(character_array.length<=1){
+                character_array.push(char_item);                
+            }
+            showSelectedCharacters();
+        }
+        function showSelectedCharacters(){
+            $('.character_item').removeClass('selected');
+            console.log('character_array',character_array);
+            for(let i=0;i<character_array.length;i++){
+                $('#'+character_array[i]).addClass('selected')
+            }
+        }
+
+        function gotoSelect_card(){
+            $('.section.visible').removeClass('visible');
+            $('#select_card').addClass('visible');   
+        }
+        function select_card(e){
+            card_item = $(e.currentTarget).data('card');
+            $('.card_item').removeClass('selected');
+            $(e.currentTarget).addClass('selected')        
+        }
+        
         $( document ).ready(function() {
             console.log( "ready!" );
             const email_field= $('#email_field');
+            const character_count =0;
             $('#intro_button').on('click',function(){gotoFormContainer()})
 
             $('.keyboard-button, .keyboard-button_mail').on('click',function(e){                
@@ -457,7 +536,16 @@ meter {
             })
             $('#navigation_goback').on('click',function(){gotoIntro()})
             $('#navigation_submit').on('click',function(){gotoConfirm()})
-            
+
+            $('#navigation_goback_confirm').on('click',function(){gotoFormContainer()})
+            $('#navigation_submit_confirm').on('click',function(){gotoSelect_character()})
+            $('.character_item').on('click',function(e){select_character(e)})
+
+
+            $('#navigation_goback_select').on('click',function(){gotoSelect_character()})
+            $('#navigation_submit_select').on('click',function(){gotoSelect_card()})
+
+            $('.card_item').on('click',function(e){select_card(e)})
         });
 
         
